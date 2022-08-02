@@ -3,6 +3,7 @@ from datetime import datetime
 import os
 import telebot
 from telebot.types import ReplyKeyboardMarkup, KeyboardButton
+import keep_alive
 BOT_API = os.environ["BOT_API"]
 bot = telebot.TeleBot(BOT_API)
 
@@ -116,5 +117,5 @@ def all_messages(message):
     else:
         bot.send_message(message.chat.id,message.text)
 
-
 bot.infinity_polling()
+keep_alive.keep_alive()
