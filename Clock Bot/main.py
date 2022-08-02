@@ -79,7 +79,7 @@ def all_messages(message):
     elif message.text == 'second page':
         bot.send_message(message.from_user.id, 'welcome second year', reply_markup=keyboard('second page'))
     elif message.text == 'Clock':
-        bot.send_message(message.from_user.id, "clock", reply_markup=keyboard('Clock'))
+        bot.send_message(message.from_user.id, "Clock", reply_markup=keyboard('Clock'))
     elif message.text == 'Activate Clock':
         global clock_state
         if clock_state == "inacitve":
