@@ -96,7 +96,7 @@ def all_messages(message):
             clock_inactivate()
             bot.send_message(message.from_user.id, "Clock Deleted")
         elif clock_state == "inacitve":
-            bot.send_message(message.from_user.id, "There Are No Active Clocks To Stop")
+            bot.send_message(message.from_user.id, "There Are No Active Clocks To Delete")
     elif message.text == "Clock State":
         bot.send_message(message.from_user.id, clock_state)
     elif message.text == "Go Back":
