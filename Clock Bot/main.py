@@ -17,6 +17,9 @@ def clock(message):
     bot.send_message(message.from_user.id, timenow_first)
     time.sleep(1)
     clock_id = (message.message_id+2)
+    activated_message = (message.message_id+1)
+    global clock_activated_id
+    clock_activated_id = str(activated_message)
     global id_clock 
     id_clock = str(clock_id)
     global clock_state
@@ -26,6 +29,10 @@ def clock(message):
         timenow = now.strftime("%H:%M:%S")
         bot.edit_message_text(timenow, message.from_user.id, message.message_id+2)
         time.sleep(1)
+
+def delete_clock(message):
+    bot.delete_message(message.from_user.id, clock_activated_id)
+    bot.delete_message(message.from_user.id, id_clock)
 
 
 def keyboard(key_type="Normal"):
@@ -48,18 +55,15 @@ def keyboard(key_type="Normal"):
         markup.add(*row)
         row = [KeyboardButton('Go Back')]
         markup.add(*row)
-        markup.add(KeyboardButton("✅Done"))
-        markup.add(KeyboardButton(""))
-        markup.add(KeyboardButton(""))
     elif key_type == 'first page':
         markup.add(KeyboardButton("Say Hi"))
+        markup.add(KeyboardButton("My Username"))
+        markup.add(KeyboardButton("My ID"))
         markup.add(KeyboardButton("Go Back"))
-        markup.add(KeyboardButton("✅Done"))
-        markup.add()
-        markup.add()
+
     return markup
 
-@bot.message_handler(commands=["start"])
+@bot.message_handler(commands=["start", "keyboard"])
 def start_message(message):
     bot.send_message(message.chat.id,"You can use the keyboard",reply_markup=keyboard())
 
@@ -80,10 +84,13 @@ def all_messages(message):
             bot.send_message(message.from_user.id, "Clock Activated")
             clock(message)
         elif clock_state == "active":
-            bot.send_message(message.from_user.id, "There's A Currently Active Clock, Delete it First")
+            clock_inactivate()
+            delete_clock(message)
+            bot.send_message(message.from_user.id, "Clock Activated")
+            clock(message)
     elif message.text == 'Delete Clock':
         if clock_state == "active":
-            bot.delete_message(message.from_user.id, id_clock)
+            delete_clock(message)
             clock_inactivate()
             bot.send_message(message.from_user.id, "Clock Deleted")
         elif clock_state == "inacitve":
@@ -100,6 +107,12 @@ def all_messages(message):
         bot.send_message(message.from_user.id, "This will be deleted in 1s")
         time.sleep(1)
         bot.delete_message(message.from_user.id,message.message_id+1)
+    elif message.text == "Say Hi":
+        bot.send_message(message.from_user.id, "Hi"+" "+ message.from_user.first_name+" "+message.from_user.last_name)
+    elif message.text == "My Username":
+        bot.send_message(message.from_user.id,"@"+message.from_user.username)
+    elif message.text == "My ID":
+        bot.send_message(message.from_user.id,message.from_user.id)
     else:
         bot.send_message(message.chat.id,message.text)
 
