@@ -77,7 +77,7 @@ def all_messages(message):
     elif message.text == 'first page':
         bot.send_message(message.from_user.id, 'going to first page', reply_markup=keyboard('first page'))
     elif message.text == 'second page':
-        bot.send_message(message.from_user.id, 'welcome second year', reply_markup=keyboard('second page'))
+        bot.send_message(message.from_user.id, 'welcome to second page', reply_markup=keyboard('second page'))
     elif message.text == 'Clock':
         bot.send_message(message.from_user.id, "Clock", reply_markup=keyboard('Clock'))
     elif message.text == 'Activate Clock':
