@@ -38,7 +38,7 @@ def delete_clock(message):
 
 
 def keyboard(key_type="Normal"):
-    markup = ReplyKeyboardMarkup(row_width=2)
+    markup = ReplyKeyboardMarkup(row_width=2, resize_keyobard=True)
     if key_type == "Normal":
         row = [KeyboardButton('first page')]
         markup.add(*row)
