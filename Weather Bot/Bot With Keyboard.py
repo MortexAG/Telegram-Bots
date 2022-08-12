@@ -33,7 +33,6 @@ def send_location():
                 message.from_user.id,
                 "Sorry The Bot is Not Working Now, Try Later or Send To The Maker For Debugging"
             )
-# The Bot Keyboard
 # The Mecca Location Function
 def mecca(message):
     try:
@@ -52,7 +51,8 @@ def mecca(message):
             message.chat.id,
             "Sorry The Bot is Not Working Now, Try Later or Send To The Maker For Debugging"
         )
-# The Cairo Weather Function
+      
+  # The Cairo Weather Function
 def cairo(message):
     try:
         lat = 30.046321259557125
@@ -72,6 +72,7 @@ def cairo(message):
             "Sorry The Bot is Not Working Now, Try Later or Send To The Maker For Debugging"
         )
 
+  # The Bot Keyboard
 def keyboard(key_type="Normal"):
     markup = ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
     if key_type == "Normal":
