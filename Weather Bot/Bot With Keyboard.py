@@ -123,7 +123,7 @@ def all_messages(message):
       bot.send_message(message.from_user.id, "You Can Use /start or /keyboard To The Start The Bot's Command List")
       bot.send_message(message.from_user.id, "Please Don't Spam The Buttons, Note That The Tempreature Sent By This Bot Is Not Very Accurate")
     else:
-      bot.send_message(message.from_user.id, "Unidentified Command, Please Use The Keyboard or The Commands and Don't Send Direct Messages To The Bot")
+      bot.send_message(message.from_user.id, "Unidentified Command, Please Use The Keyboard or The Commands and Don't Send Direct Messages To The Bot, You May Need To Restart The Bot")
       
 bot.infinity_polling()
 keep_alive.keep_alive()
