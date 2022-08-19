@@ -1,3 +1,4 @@
+import time
 import os
 import telebot
 import convertapi
@@ -58,6 +59,7 @@ def document(message):
     with open("./downloaded/"+file_downloaded, 'wb') as new_file:
         new_file.write(downloaded_file)
     try:
+      bot.send_message(message.chat.id, "Document Recieved")
       word_to_pdf()
       bot.send_message(message.chat.id, "Word Converted To PDF")
       for filename in glob.glob('converted/*'):
@@ -66,6 +68,7 @@ def document(message):
         empty_converted()
         empty_downloaded()
     except:
+      bot.send_message(message.chat.id, "Document Recieved")
       pdf_to_word()
       bot.send_message(message.chat.id, "PDF Converted To Word")
       for filename in glob.glob('converted/*'):
