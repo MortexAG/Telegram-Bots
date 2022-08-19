@@ -6,3 +6,4 @@ Python Modules Required :
 5.pyTelegramBotAPI
 6.convertapi
 7.flask
+8.Two Folders "converted" and "downloaded" in The Same Directory as The Script.
