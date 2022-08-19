@@ -55,10 +55,12 @@ def document(message):
     file_name = message.document.file_name
     print(file_name)
     file_downloaded = file_name
+    file_type = message.document.mime_type
     with open("./downloaded/"+file_downloaded, 'wb') as new_file:
         new_file.write(downloaded_file)
-    try:
-      bot.send_message(message.chat.id, "Document Recieved")
+      
+    if file_type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+      bot.reply_to(message, "Word Document Recieved")
       word_to_pdf()
       bot.send_message(message.chat.id, "Word Converted To PDF")
       for filename in glob.glob('converted/*'):
@@ -66,8 +68,8 @@ def document(message):
         bot.send_document(message.chat.id, pdf_converted)
         empty_converted()
         empty_downloaded()
-    except:
-      bot.send_message(message.chat.id, "Document Recieved")
+    elif file_type == "application/pdf":
+      bot.reply_to(message, "PDF Document Recieved")
       pdf_to_word()
       bot.send_message(message.chat.id, "PDF Converted To Word")
       for filename in glob.glob('converted/*'):
@@ -75,7 +77,11 @@ def document(message):
         bot.send_document(message.chat.id, word_converted)
         empty_converted()
         empty_downloaded()
-      
+    else:
+        bot.send_message(message.chat.id, "Please Send PDF or Word Documents Only")
+        empty_converted()
+        empty_downloaded()
+         
 
 bot.infinity_polling()
 keep_alive.keep_alive()
