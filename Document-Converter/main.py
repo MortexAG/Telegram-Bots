@@ -18,6 +18,7 @@ def empty_downloaded():
 empty_converted()
 empty_downloaded()
 
+
 def word_to_pdf():
   convertapi.api_secret = API_SECRET
   convertapi.convert('pdf', {
@@ -28,18 +29,37 @@ def pdf_to_word():
   convertapi.convert('word', {
     'File': "./downloaded/"+file_name
 }, from_format = 'pdf').save_files('./converted')
+
+def ppt_to_pdf():
+  convertapi.api_secret = API_SECRET
+  convertapi.convert('pdf', {
+    'File': "./downloaded/"+file_name
+}, from_format = 'ppt').save_files('./converted')
+def pptx_to_pdf():
+  convertapi.api_secret = API_SECRET
+  convertapi.convert('pdf', {
+    'File': "./downloaded/"+file_name
+}, from_format = 'pptx').save_files('./converted')
+
+def powerpoint_to_pdf():
+  try:
+    ppt_to_pdf()
+  except:
+    pptx_to_pdf()
+  
+
 def get_downloaded_file():
   bot.get_file()
 
 @bot.message_handler(commands=["start", "keyboard"])
 def start_message(message):
     bot.send_message(message.chat.id,
-                     "Send A Word Or A PDF Document Directly in This Chat To Convert Them")
+                     "Send A Word Or A PDF Or A Powerpoint Document Directly in This Chat To Convert It")
 
 
-@bot.message_handler(commands=['convert'])
+@bot.message_handler(commands=['clear'])
 def replying(message):
-  bot.send_message(message.chat.id, "Please Send A Word or A PDF Document")
+  bot.send_message(message.chat.id, "Cleared All Downloaded Files in The Bot's Storage")
   empty_converted()
   empty_downloaded()
 @bot.message_handler(content_types=['document'])
@@ -77,11 +97,23 @@ def document(message):
         bot.send_document(message.chat.id, word_converted)
         empty_converted()
         empty_downloaded()
+    elif file_type in("application/vnd.openxmlformats-officedocument.presentationml.presentation", "application/vnd.ms-powerpoint"):
+        bot.reply_to(message, "Powerpoint Document Recieved")
+        powerpoint_to_pdf()
+        for filename in glob.glob('converted/*'):
+          powerpoint_converted = open(filename, 'rb')
+          bot.send_message(message.chat.id, "Powerpoint Converted To PDF")
+          bot.send_document(message.chat.id, powerpoint_converted)
+          empty_converted()
+          empty_downloaded()
+                
     else:
+        print(file_type)
+        bot.send_message(message.chat.id, file_type)
         bot.send_message(message.chat.id, "Please Send PDF or Word Documents Only")
         empty_converted()
         empty_downloaded()
-         
+
 
 bot.infinity_polling()
 keep_alive.keep_alive()
