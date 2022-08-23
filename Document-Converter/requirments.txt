@@ -1,10 +1,13 @@
-Python Modules Required :
-1.Requests
-2.os
-3.Threading
-4.glob
-5.pyTelegramBotAPI
-6.convertapi
-7.flask
+
+Requests
+os
+Threading
+glob
+pyTelegramBotAPI
+convertapi
+flask
+
+##
 8.Two Folders "converted" and "downloaded" in The Same Directory as The Script.
 9.A Free Account on convertapi.com Site To Use Your API Secret In This Program.
+##
