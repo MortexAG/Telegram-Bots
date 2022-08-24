@@ -20,9 +20,9 @@ def help(message):
 @bot.message_handler(commands=['subscribe'])
 
 def subscribe(message):
+  bot.send_message(message.chat.id, "You Will Start Recieving Daily Good Morning Texts at 6AM GMT.")
   while (True):
     import time
-    bot.send_message(message.chat.id, "You Will Start Recieving Daily Good Morning Texts at 6AM GMT.")
     now = datetime.now()
     today = datetime.today()
     weekday = today.strftime('%A')
