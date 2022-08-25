@@ -27,12 +27,12 @@ def get_quality():
 @bot.message_handler(commands=["start", "keyboard"])
 def start_message(message):
     bot.send_message(message.chat.id,
-                     "Send A Word Or A PDF Document Directly in This Chat To Convert Them")
+                     "Send The Youtube Link Directly In The Chat Then Wait For The Audio To Be Sent")
 
 
 @bot.message_handler(commands=['empty'])
 def replying(message):
-  bot.send_message(message.chat.id, "Please Send A Word or A PDF Document")
+  bot.send_message(message.chat.id, "The Bot Storage Is Now Empty")
   empty_converted()
   empty_downloaded()
 @bot.message_handler(content_types=['text'])
