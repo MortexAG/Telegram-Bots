@@ -7,7 +7,6 @@ from replit import db
 
 BOT_TOKEN = os.environ['BOT_KEY']
 bot = telebot.TeleBot(BOT_TOKEN)
-CHAT = os.environ['CHAT']
 
 @bot.message_handler()
 def maintainance(message):
