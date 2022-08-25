@@ -1,9 +1,7 @@
 import telebot
-import datetime 
-from datetime import datetime
 import os
 import keep_alive
-from replit import db
+
 
 BOT_TOKEN = os.environ['BOT_KEY']
 bot = telebot.TeleBot(BOT_TOKEN)
