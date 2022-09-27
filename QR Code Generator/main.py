@@ -26,7 +26,7 @@ def qr_create(message):
 
 @bot.message_handler(commands=["start", "help", "keyboard"])
 def start_message(message):
-  bot.send_message(message.chat.id, 'Welcome To The QR Code Generator Bot Send The Text Directly In The Chat')
+  bot.send_message(message.chat.id, 'Welcome To The QR Code Generator Bot Send The Text Directly In The Chat To Convert It To A QR Code')
 
   
 @bot.message_handler(func=lambda message:True)
