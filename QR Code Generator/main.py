@@ -5,7 +5,6 @@ import glob
 import keep_alive
 
 BOT_API = os.environ["BOT_API"]
-API_KEY = os.environ['API_KEY']
 bot = telebot.TeleBot(BOT_API)
 state = "inactive"
 def empty_dir():
@@ -17,10 +16,7 @@ def qr_create(message):
           qr_text = message.text
           url ="http://api.qrserver.com/v1/create-qr-code/?data={}&size=500x500".format(qr_text)
           response = requests.get(url)
-          file = open("./qr-image/result.jpg", "wb")
-          file.write(response.content)
-          file.close()
-          qr_result = open("./qr-image/result.jpg", "rb")
+          qr_result = response.content
           bot.send_photo(message.chat.id, qr_result)
           empty_dir()  
 
