@@ -56,6 +56,7 @@ def keyboard(key_type="Normal"):
 
     if key_type == "Normal":
       markup.add(KeyboardButton('Subscribe'))
+      markup.add(KeyboardButton("Show My Message"))
       markup.add(KeyboardButton('Unsubscribe'))
     elif key_type == "Subscribe":
       markup.add(KeyboardButton("Choose Time"))
@@ -64,6 +65,7 @@ def keyboard(key_type="Normal"):
     elif key_type == "Choose Time":
       row = daytime
       markup.add(*row)
+      markup.add(KeyboardButton("Back"))
     elif key_type == "Choose Message":
       markup.add(KeyboardButton("Custom Message"))
       markup.add(KeyboardButton("Default Message"))
@@ -149,6 +151,9 @@ def all_messages(message):
       bot.send_message(message.from_user.id, "Send The Time You Want To Recieve The Daily Message", reply_markup = keyboard('Choose Time'))
       global setting_now
       setting_now = "available"
+  elif message.text == "Back" and setting_now == "availabe":
+    bot.send_message(message.from_user.id, "Going Back", reply_markup = keyboard('Subscribe'))
+    setting_now = "unavilable"
   elif message.text in daytime and setting_now == "available":
     ### Checking
     try :
@@ -260,6 +265,17 @@ def all_messages(message):
   elif message.text == "Cancel" and unsub_confirm == "active":
     bot.send_message(message.from_user.id, "Operation Cancelled", reply_markup = keyboard('Normal'))
     unsub_inactive()
+
+  elif message.text == "Show My Message":
+    try :
+      sql_subscribed = f"""SELECT * FROM `gm_bot_subscribers` WHERE userid = {message.from_user.id}"""
+      cursor.execute(sql_subscribed)
+      for comp in cursor:
+        sub_id = comp[2].strip()
+      bot.send_message(sub_id, f"Hello {comp[1].strip()}, Your Daily Message is")
+      bot.send_message(sub_id, comp[5].strip())
+    except:
+      bot.send_message(message.from_user.id, "You're Not Subscribed")
     
 print("The Bot Is Running")
 bot.infinity_polling()
