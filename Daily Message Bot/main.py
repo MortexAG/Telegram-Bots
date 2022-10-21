@@ -97,9 +97,9 @@ def main_bot():
         for comp in cursor:
           ono = comp[1]
         bot.send_message(message.from_user.id, f"Welcome Back {ono}")
-        bot.send_message(message.from_user.id,"Welcome To The Daily Message Bot Register An Account And Choose The Time And Message To Be Sent Daily, NOTE That The Bot Is Not Accurate As The Message Can Be Recieved Any Time During The Hour You Will Decide", reply_markup=keyboard())
+        bot.send_message(message.from_user.id,"Welcome To The Daily Message Bot Register An Account And Choose The Time And Message To Be Sent Daily", reply_markup=keyboard())
       except :
-        bot.send_message(message.from_user.id,"Welcome To The Bot, This Bot Can Send A Message Daily In The Same One Hour Period, To Start using The Bot Please Use The Following Command /subscribe, To Stop Recieving Daily Messages Use /unsubscribe", reply_markup=keyboard())
+        bot.send_message(message.from_user.id,"Welcome To The Daily Message Bot Register An Account And Choose The Time And Message To Be Sent Daily", reply_markup=keyboard())
         now = get_current_time()
         sql_add_new = f""" INSERT INTO `gm_bot_users` (id, username, userid, join_date) VALUES (0, '{message.from_user.first_name+' '+message.from_user.last_name}', '{message.from_user.id}', '{now}')"""
         cursor.execute(sql_add_new)
@@ -116,6 +116,13 @@ def main_bot():
 
     def check_sub(message):
         try :
+          mydb = mysql.connector.connect (
+  host = db_host,
+  user = db_user,
+  password = db_pass,
+  database = db_user
+)
+          cursor = mydb.cursor()
           sql_check = f"""SELECT * FROM `gm_bot_subscribers` WHERE userid = {message.from_user.id}"""
           cursor.execute(sql_check)
           for comp in cursor:
@@ -126,6 +133,13 @@ def main_bot():
           print("hi")
     def subscribe(message):
       try :
+        mydb = mysql.connector.connect (
+  host = db_host,
+  user = db_user,
+  password = db_pass,
+  database = db_user
+)
+        cursor = mydb.cursor()
         sql_subscribed = f"""SELECT * FROM `gm_bot_subscribers` WHERE userid = {message.from_user.id}"""
         cursor.execute(sql_subscribed)
         for comp in cursor:
@@ -137,6 +151,13 @@ def main_bot():
 
     def insert_sub(message):
       now = get_current_time()
+      mydb = mysql.connector.connect (
+  host = db_host,
+  user = db_user,
+  password = db_pass,
+  database = db_user
+)
+      cursor = mydb.cursor()
       sql_subscribe = f"""INSERT INTO `gm_bot_subscribers` (id, username, userid, subscription_state, subscription_date, message,message_time,  message_state) VALUES (0, '{message.from_user.first_name+' '+message.from_user.last_name}',' {message.from_user.id}', 'subscribed','{now}', '{message.text}','{msg_time}' ,  'not_sent') """
       cursor.execute(sql_subscribe)
       mydb.commit()
@@ -153,6 +174,13 @@ def main_bot():
       elif message.text == "Choose Time":
         ## Checking
         try :
+          mydb = mysql.connector.connect (
+  host = db_host,
+  user = db_user,
+  password = db_pass,
+  database = db_user
+)
+          cursor = mydb.cursor()
           sql_check = f"""SELECT * FROM `gm_bot_subscribers` WHERE userid = {message.from_user.id}"""
           cursor.execute(sql_check)
           for comp in cursor:
@@ -170,6 +198,13 @@ def main_bot():
         if message.text in time_singles:
             ### Checking
             try :
+              mydb = mysql.connector.connect (
+  host = db_host,
+  user = db_user,
+  password = db_pass,
+  database = db_user
+)
+              cursor = mydb.cursor()
               sql_check = f"""SELECT * FROM `gm_bot_subscribers` WHERE userid = {message.from_user.id}"""
               cursor.execute(sql_check)
               for comp in cursor:
@@ -188,6 +223,13 @@ def main_bot():
         else:
                     ### Checking
             try :
+              mydb = mysql.connector.connect (
+  host = db_host,
+  user = db_user,
+  password = db_pass,
+  database = db_user
+)
+              cursor = mydb.cursor()
               sql_check = f"""SELECT * FROM `gm_bot_subscribers` WHERE userid = {message.from_user.id}"""
               cursor.execute(sql_check)
               for comp in cursor:
@@ -208,6 +250,13 @@ def main_bot():
         ##
         ###checking
         try :
+          mydb = mysql.connector.connect (
+  host = db_host,
+  user = db_user,
+  password = db_pass,
+  database = db_user
+)
+          cursor = mydb.cursor()
           sql_check = f"""SELECT * FROM `gm_bot_subscribers` WHERE userid = {message.from_user.id}"""
           cursor.execute(sql_check)
           for comp in cursor:
@@ -225,6 +274,13 @@ def main_bot():
             ##
         ### Checking
         try :
+          mydb = mysql.connector.connect (
+  host = db_host,
+  user = db_user,
+  password = db_pass,
+  database = db_user
+)
+          cursor = mydb.cursor()
           sql_check = f"""SELECT * FROM `gm_bot_subscribers` WHERE userid = {message.from_user.id}"""
           cursor.execute(sql_check)
           for comp in cursor:
@@ -240,6 +296,13 @@ def main_bot():
             bot.send_message(message.from_user.id, f"The Default Daily Message is, \n{default_msg}", reply_markup = keyboard('Normal'))
             time_undone()
             now = get_current_time()
+            mydb = mysql.connector.connect (
+  host = db_host,
+  user = db_user,
+  password = db_pass,
+  database = db_user
+)
+            cursor = mydb.cursor()
             sql_subscribe_default = f"""INSERT INTO `gm_bot_subscribers` (id, username, userid, subscription_state, subscription_date, message,message_time,  message_state) VALUES (0, '{message.from_user.first_name+' '+message.from_user.last_name}',' {message.from_user.id}', 'subscribed','{now}', '{default_msg}','{msg_time}' ,  'not_sent') """
             cursor.execute(sql_subscribe_default)
             mydb.commit()
@@ -248,6 +311,13 @@ def main_bot():
       elif message.text == "Custom Message":
         ###Checking
         try :
+          mydb = mysql.connector.connect (
+  host = db_host,
+  user = db_user,
+  password = db_pass,
+  database = db_user
+)
+          cursor = mydb.cursor()
           sql_check = f"""SELECT * FROM `gm_bot_subscribers` WHERE userid = {message.from_user.id}"""
           cursor.execute(sql_check)
           for comp in cursor:
@@ -263,6 +333,13 @@ def main_bot():
       elif message.text != "Choose Message" and custom_state == "active":
         ###checking
         try :
+          mydb = mysql.connector.connect (
+  host = db_host,
+  user = db_user,
+  password = db_pass,
+  database = db_user
+)
+          cursor = mydb.cursor()
           sql_check = f"""SELECT * FROM `gm_bot_subscribers` WHERE userid = {message.from_user.id}"""
           cursor.execute(sql_check)
           for comp in cursor:
@@ -286,6 +363,13 @@ def main_bot():
       elif message.text == "Unsubscribe":
         ### Checking
         try :
+            mydb = mysql.connector.connect (
+  host = db_host,
+  user = db_user,
+  password = db_pass,
+  database = db_user
+)
+            cursor = mydb.cursor()
             sql_check_sub = f"""SELECT * FROM `gm_bot_subscribers` WHERE userid = {message.from_user.id}"""
             cursor.execute(sql_check_sub)
             for comp in cursor:
@@ -295,6 +379,13 @@ def main_bot():
         except:
             bot.send_message(message.from_user.id, "You're Not Subscribed")
       elif message.text == "Confirm Unsubscribe" and unsub_confirm == "active":
+        mydb = mysql.connector.connect (
+  host = db_host,
+  user = db_user,
+  password = db_pass,
+  database = db_user
+)
+        cursor = mydb.cursor()
         sql_unsubscribe = f"""DELETE FROM `gm_bot_subscribers` WHERE userid = {message.from_user.id}"""
         cursor.execute(sql_unsubscribe)
         mydb.commit()
@@ -306,6 +397,13 @@ def main_bot():
 
       elif message.text == "Show My Message":
         try :
+          mydb = mysql.connector.connect (
+  host = db_host,
+  user = db_user,
+  password = db_pass,
+  database = db_user
+)
+          cursor = mydb.cursor()
           sql_subscribed = f"""SELECT * FROM `gm_bot_subscribers` WHERE userid = {message.from_user.id}"""
           cursor.execute(sql_subscribed)
           for comp in cursor:
@@ -360,11 +458,23 @@ def send_message():
         cursor.execute(sql_choose)
         time.sleep(5)
     #time.sleep(1)
+
+def signin_loop():
+  while (True):
+    mydb = mysql.connector.connect (
+  host = db_host,
+  user = db_user,
+  password = db_pass,
+  database = db_user
+)
+    cursor = mydb.cursor()
   
 background_loop = threading.Thread(name='send_message',daemon = True, target=send_message)
 the_main = threading.Thread(name='main', target=main_bot)
+signin_loop = threading.Thread(name='signin_loop', target=signin_loop)
 
 background_loop.start()
 the_main.start()
+signin_loop.start()
 bot.infinity_polling()
 keep_alive.keep_alive()
