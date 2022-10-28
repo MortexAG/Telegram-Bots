@@ -20,7 +20,7 @@ def upload_image(message):
         ('image',('file',open(f'./images/{message}','rb'),'application/octet-stream'))
         ]
   headers = {
-          'Authorization': f'Bearer {Access_Token}'
+          'Authorization': f'Client-ID {Access_Token}'
         }
 
   response = requests.request("POST", url, headers=headers, data=payload, files=files)
@@ -49,12 +49,14 @@ def image_upload(message):
     bot.send_message(message.from_user.id, "Image Was Uplaoded Successfully, This is The Image's Link")
     bot.send_message(message.from_user.id, image_link)
     empty_images()
+    print("An Image Was Recieved And Uploaded Successfully")
   except:
     empty_images()
     bot.send_message(message.from_user.id, "There Was An Error In Image Upload Please Try Again, If The Issue Presists Try At Another Time")
+    print("An Image Was Recieved And There Was An Error Uploading It")
 @bot.message_handler(content_types = ['text'])
 def no_text(message):
   bot.send_message(message.from_user.id, "Please Send Only Images To The Chat Or Use The Commands /start , /help")
-
+print("Bot Is Running")
 bot.infinity_polling()
 keep_alive.keep_alive()
