@@ -1,0 +1,7 @@
+pyTelegramBotAPI
+pymongo
+flask
+python-dotenv
+threading
+datetime
+os
