@@ -16,6 +16,7 @@
 - **You Change All The Bot Info By Changing The What The Variables Are Equal To In The Configure Part**
 - Change The Cat's Name When You Get The Reminder
 - Change The Time Interval To Whatever You Want
+- Change The Time Zone The Bot Is Using
 - Add Your Telegram Bot API Token In Secrets
 - Add Your MongoDb Connection Script in Secrets
 - Add The Two Users IDs In Secrets
