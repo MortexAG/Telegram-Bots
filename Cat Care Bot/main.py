@@ -9,11 +9,15 @@ import keep_alive
 import threading
 import time
 
+# Configure The Bot Info
+cat_name = "Anakin"
+time_interval = int(12)
+time_zone = int(2)
+site_link = "https://anakin-care.mortexag.repl.co"
 mongo_connect = os.environ['mongo_connect']
 BOT_API = os.environ['BOT_API']
 owner_1 = str(os.environ['owner_1'])
 owner_2 = str(os.environ['owner_2'])
-
 owners_list = [owner_1, owner_2]
 cluster = MongoClient(mongo_connect)
 db = cluster["anakin_care"]
@@ -26,7 +30,7 @@ def main_bot():
   def get_hours():
     time_now = datetime.now()
     hours = int(time_now.strftime("%H"))
-    accurate = hours+2
+    accurate = hours+int(time_zone)
     return accurate
 
   def get_minutes():
@@ -68,7 +72,7 @@ def main_bot():
   def site(message):
     # check if the user is allowed to use the bot
     if str(message.from_user.id) in owners_list:
-      bot.send_message(message.chat.id,"Here's A Link To Follow Up: https://anakin-care.mortexag.repl.co")
+      bot.send_message(message.chat.id,f"Here's A Link To Follow Up: {site_link}")
     else:
       bot.send_message(message.from_user.id, "You Don't Have Permission To Use The Bot")
 
@@ -95,7 +99,7 @@ def main_bot():
         times = get_time()
         hours = get_hours()
         minutes = get_minutes()
-        next_h= int(hours) + 12
+        next_h= int(hours) + int(time_interval)
 
         # if the time after adding 12 hours is more than 24 we subtract 24 from it to get the AM time
         
@@ -167,7 +171,7 @@ def reminder():
     def get_hours():
       time_now = datetime.now()
       hours = int(time_now.strftime("%H"))
-      accurate = hours+2
+      accurate = hours+int(time_zone)
       return accurate
     while (True):
       feeding = food.find_one({"_id":0})
@@ -175,7 +179,7 @@ def reminder():
       now = get_hours()
       if int(now) == (next_time):
         for i in owners_list:
-          bot.send_message(i, f"it's {next_time}, please add food to Anakin")
+          bot.send_message(i, f"it's {next_time}, please add food to {cat_name}")
       time.sleep(600)
 
 
