@@ -143,6 +143,12 @@ def main_bot():
           
         bot.send_message(message.from_user.id,f"Last Feeding Time Was {last_time} And Was Done By '{last_feeder}'")
         bot.send_message(message.from_user.id, f"Next time will Be at {next_time}, which is {remain_h} hours from now")
+        
+          # Calculate How Much You're Past The Time
+          
+        #if remain_h > time_interval:
+        #  past = int(remain_h) - int(time_interval)
+        #  bot.send_message(message.from_user.id, f"You're Past The Feeding Time By {past} Hours")
 
       #Next Feeding Time
         
@@ -162,7 +168,12 @@ def main_bot():
             next_hours = int(next_hours)-24
             remain_h = abs(int(next_hours) - int(now_h))
           bot.send_message(message.from_user.id, f"Next time will Be at {next_time}, which is {remain_h} hours from now")
-        
+
+          # Calculate How Much You're Past The Time
+          
+          #if remain_h > time_interval:
+          #  past = int(remain_h) - int(time_interval)
+          #  bot.send_message(message.from_user.id, f"You're Past The Feeding Time By {past} Hours")
 
         # Don't Send Messages To The bot
         
