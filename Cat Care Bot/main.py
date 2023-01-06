@@ -83,7 +83,7 @@ def main_bot():
     # check if the user is allowed to use the bot
     if str(message.from_user.id) in owners_list:
       bot.send_message(message.chat.id,"This Bot Was Made By @MortexAG Using Python")
-      bot.send_message(message.chat.id, "Here's My Source Code: https://github.com/MortexAG/Telegram-Bots/tree/main/Anakin%20Care%20Bot")
+      bot.send_message(message.chat.id, "Here's My Source Code: https://github.com/MortexAG/Telegram-Bots/tree/main/Cat%20Care%20Bot")
     else:
       bot.send_message(message.from_user.id, "You Don't Have Permission To Use The Bot")
 
@@ -133,10 +133,12 @@ def main_bot():
         
         # if the time difference is more than 12 hours we add 24 to the set time and subtract it from the main time now to get the difference in hours
         
-        if remain_h >= 12:
+        if remain_h > 12:
           next_hours = int(next_hours)+24
           remain_h = abs(int(next_hours) - int(now_h))
-
+          if remain_h >= 24:
+            next_hours = int(next_hours)-24
+            remain_h = abs(int(next_hours) - int(now_h))
         # send last time and next time messages
           
         bot.send_message(message.from_user.id,f"Last Feeding Time Was {last_time} And Was Done By '{last_feeder}'")
@@ -153,10 +155,14 @@ def main_bot():
         
         # if the time difference is more than 12 hours we add 24 to the set time and subtract it from the main time now to get the difference in hours
         
-        if remain_h >= 12:
+        if remain_h > 12 and remain_h < 24:
           next_hours = int(next_hours)+24
           remain_h = abs(int(next_hours) - int(now_h))
-        bot.send_message(message.from_user.id, f"Next time will Be at {next_time}, which is {remain_h} hours from now")
+          if remain_h >= 24:
+            next_hours = int(next_hours)-24
+            remain_h = abs(int(next_hours) - int(now_h))
+          bot.send_message(message.from_user.id, f"Next time will Be at {next_time}, which is {remain_h} hours from now")
+        
 
         # Don't Send Messages To The bot
         
