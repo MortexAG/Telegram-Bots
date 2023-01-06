@@ -161,13 +161,13 @@ def main_bot():
         
         # if the time difference is more than 12 hours we add 24 to the set time and subtract it from the main time now to get the difference in hours
         
-        if remain_h > 12 and remain_h < 24:
+        if remain_h > 12:
           next_hours = int(next_hours)+24
           remain_h = abs(int(next_hours) - int(now_h))
           if remain_h >= 24:
             next_hours = int(next_hours)-24
             remain_h = abs(int(next_hours) - int(now_h))
-          bot.send_message(message.from_user.id, f"Next time will Be at {next_time}, which is {remain_h} hours from now")
+        bot.send_message(message.from_user.id, f"Next time will Be at {next_time}, which is {remain_h} hours from now")
 
           # Calculate How Much You're Past The Time
           
