@@ -1,10 +1,18 @@
+
+<head>
 <link rel="stylesheet" href="/staticfiles/styles.css">
 <link rel="icon" href="/staticfiles/cat-solid.svg">
 <title>Anakin Cat Food Time</title>
+<meta name=viewport content="width=device-width, initial-scale=1, user-scalable=yes">
+</head>
 <center>
   <h2>Last Feeder was: {{feeders}}</h2>
   <h2>Last Time Was: {{last}}</h2>
   <h2>Next Time: {{next}}</h2>
+  <h2>Score:</h2>
+  {%for user in leaderboard%}
+  <h3>{{user}}</h3>
+  {%endfor%}
 
 <div id="box">
   <div class="cat">
@@ -56,5 +64,5 @@
     </div>
   </div>
 </div>
-<h5>Cat Design Taken From : https://codepen.io/laurenhansen/pen/XeJGGv</h5>
+<h5>Cat Design Taken From : codepen.io/laurenhansen/pen/XeJGGv</h5>
 </center>
