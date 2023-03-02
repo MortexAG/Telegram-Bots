@@ -8,6 +8,7 @@ from datetime import datetime
 import keep_alive
 import threading
 import time
+import random
 
 # Configure The Bot Info
 cat_name = "Anakin"
@@ -22,6 +23,7 @@ owners_list = [owner_1, owner_2]
 cluster = MongoClient(mongo_connect)
 db = cluster["anakin_care"]
 food = db['food_time']
+points = db['points']
 
 bot = telebot.TeleBot(BOT_API)
 
@@ -36,8 +38,10 @@ def main_bot():
   def get_minutes():
     time_now = datetime.now()
     minutes = int(time_now.strftime("%M"))
-    return minutes
-
+    if minutes < 10:
+        minutes = str(0)+ str(minutes)
+        return minutes
+    return int(minutes)
   def get_time():
     hours = get_hours()
     minutes = get_minutes()
@@ -46,11 +50,13 @@ def main_bot():
     #accurate = int(hours)+2
     times = str(hours)+":"+str(minutes)
     return times
+    
 
   def keyboard(key_type="Normal"):
       markup = ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
       if key_type == "Normal":
           markup.add(KeyboardButton('Add Food'))
+          markup.add(KeyboardButton('Score'))
           markup.add(KeyboardButton('Last Food Time'))
           markup.add(KeyboardButton('Next Food Time'))
 
@@ -82,11 +88,20 @@ def main_bot():
   def source(message):
     # check if the user is allowed to use the bot
     if str(message.from_user.id) in owners_list:
-      bot.send_message(message.chat.id,"This Bot Was Made By @MortexAG Using Python")
+      bot.send_message(message.chat.id,"This Bot Was Made By @AhmedGouda100 Using Python")
       bot.send_message(message.chat.id, "Here's My Source Code: https://github.com/MortexAG/Telegram-Bots/tree/main/Cat%20Care%20Bot")
     else:
       bot.send_message(message.from_user.id, "You Don't Have Permission To Use The Bot")
 
+  def add_points(id, username):
+    current_points = points.find_one({"_id":id})
+    print(current_points)
+    the_points = current_points['points']
+    print(the_points)
+    new_points = int(the_points)+10
+    filter = {"_id":id}
+    newvalues = {"$set":{"username":f"{username}","points":f"{new_points}"}}
+    points.update_one(filter, newvalues)
 
   @bot.message_handler(func=lambda message:True)
   def all_messages(message):
@@ -112,11 +127,31 @@ def main_bot():
         filter = {"_id":0}
         newvalues = {"$set":{"feeder":message.from_user.username, "last_time":times, "next_time_number":int(next_h), "next_time":next_time}}
         food.update_one(filter, newvalues)
-
+        # add points
+        add_points(message.from_user.id, message.from_user.username)
+        current_user = points.find_one({"_id":message.from_user.id})
+        the_points = current_user['points']
       # sending note about this input
         
         bot.send_message(message.from_user.id, f"{message.from_user.username} Added Food At {times} Next Food Time in 12 Hours")
+        bot.send_message(message.from_user.id, f"{message.from_user.username} Has Gained 10 😸, Now Has {the_points} 😸")
 
+      # get the users score
+
+      elif message.text == "Score":
+        points_list= []
+        for user in owners_list:
+          user = int(user)
+          the_user = points.find_one({"_id":user})
+          user_points = the_user['points']
+          username = the_user['username']
+          result = f"{username}: "+" "+user_points+"😸"
+          points_list.append(result)
+
+        the_message = "\n".join(points_list)
+        print(the_message)
+        bot.send_message(message.from_user.id, the_message)
+        
       #get last feeding time
         
       elif message.text == "Last Food Time":
@@ -179,12 +214,14 @@ def main_bot():
         
       else:
         bot.send_message(message.from_user.id, "Don't Send Messages To The Bot, Use The Keyboard Please")
+        bot.send_photo(message.from_user.id,"https://i.ibb.co/S6tHBkf/1236-CD33-8219-4378-B8-B8-33-FFA694-D598.jpg")
     else:
       bot.send_message(message.from_user.id, "You Don't Have Permission To Use The Bot")
 
       # The background loop for the reminder
       #it checks every ten minutes if the current hour matches the hour set in the database
 def reminder():
+    random_phrase = [os.environ["phrase_1"], os.environ["phrase_2"],os.environ["phrase_3"], os.environ["phrase_4"]]
     def get_hours():
       time_now = datetime.now()
       hours = int(time_now.strftime("%H"))
@@ -196,7 +233,8 @@ def reminder():
       now = get_hours()
       if int(now) == (next_time):
         for i in owners_list:
-          bot.send_message(i, f"it's {next_time}, please add food to {cat_name}")
+          phrase = random.choice(random_phrase)
+          bot.send_message(i, f"it's {next_time}, {phrase}, please add food to {cat_name}")
       time.sleep(600)
 
 
