@@ -5,8 +5,8 @@ glob
 pyTelegramBotAPI
 convertapi
 flask
+pillow
 
 ##
-8.Two Folders "converted" and "downloaded" in The Same Directory as The Script.
-9.A Free Account on convertapi.com Site To Use Your API Secret In This Program.
+A Free Account on convertapi.com Site To Use Your API Secret In This Program.
 ##
