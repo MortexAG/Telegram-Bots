@@ -14,7 +14,7 @@ bot = telebot.TeleBot(BOT_API)
 if os.path.exists("./converted"):
   pass
 else:
-  os.mkdir("./downloaded")
+  os.mkdir("./converted")
   
 if os.path.exists("./downloaded"):
   pass
