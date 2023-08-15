@@ -13,7 +13,7 @@ import random
 # Configure The Bot Info
 cat_name = "Anakin"
 time_interval = int(12)
-time_zone = int(2)
+time_zone = int(3)
 site_link = "https://anakin-care.mortexag.repl.co"
 mongo_connect = os.environ['mongo_connect']
 BOT_API = os.environ['BOT_API']
@@ -93,14 +93,14 @@ def main_bot():
     else:
       bot.send_message(message.from_user.id, "You Don't Have Permission To Use The Bot")
 
-  def add_points(id, username):
+  def add_points(id, username, first_name):
     current_points = points.find_one({"_id":id})
     print(current_points)
     the_points = current_points['points']
     print(the_points)
     new_points = int(the_points)+10
     filter = {"_id":id}
-    newvalues = {"$set":{"username":f"{username}","points":f"{new_points}"}}
+    newvalues = {"$set":{"username":f"{username}","points":f"{new_points}", "first_name":f"{first_name}"}}
     points.update_one(filter, newvalues)
 
   @bot.message_handler(func=lambda message:True)
@@ -125,16 +125,23 @@ def main_bot():
         # setting values to add to the database
         
         filter = {"_id":0}
-        newvalues = {"$set":{"feeder":message.from_user.username, "last_time":times, "next_time_number":int(next_h), "next_time":next_time}}
+        print(message.from_user.username)
+        if message.from_user.username != None:
+          newvalues = {"$set":{"feeder":message.from_user.username, "last_time":times, "next_time_number":int(next_h), "next_time":next_time}}
+        else:
+          newvalues = {"$set":{"feeder":message.from_user.first_name, "last_time":times, "next_time_number":int(next_h), "next_time":next_time}}
         food.update_one(filter, newvalues)
         # add points
-        add_points(message.from_user.id, message.from_user.username)
+        add_points(message.from_user.id, message.from_user.username, message.from_user.first_name)
         current_user = points.find_one({"_id":message.from_user.id})
         the_points = current_user['points']
       # sending note about this input
-        
-        bot.send_message(message.from_user.id, f"{message.from_user.username} Added Food At {times} Next Food Time in 12 Hours")
-        bot.send_message(message.from_user.id, f"{message.from_user.username} Has Gained 10 😸, Now Has {the_points} 😸")
+        if message.from_user.username != None:
+          bot.send_message(message.from_user.id, f"{message.from_user.username} Added Food At {times} Next Food Time in 12 Hours")
+          bot.send_message(message.from_user.id, f"{message.from_user.username} Has Gained 10 😸, Now Has {the_points} 😸")
+        else:
+          bot.send_message(message.from_user.id, f"{message.from_user.first_name} Added Food At {times} Next Food Time in 12 Hours")
+          bot.send_message(message.from_user.id, f"{message.from_user.first_name} Has Gained 10 😸, Now Has {the_points} 😸")
 
       # get the users score
 
@@ -145,7 +152,11 @@ def main_bot():
           the_user = points.find_one({"_id":user})
           user_points = the_user['points']
           username = the_user['username']
-          result = f"{username}: "+" "+user_points+"😸"
+          if username != "None" and len(username) > 0:
+            result = f"{username}: "+" "+user_points+"😸"
+          else:
+            first_name = the_user['first_name']
+            result = f"{first_name}: "+" "+user_points+"😸"
           points_list.append(result)
 
         the_message = "\n".join(points_list)
@@ -244,6 +255,5 @@ the_main = threading.Thread(name='main', target=main_bot)
 
 background_loop.start()
 the_main.start()
-    
 bot.infinity_polling()
 keep_alive.keep_alive()
