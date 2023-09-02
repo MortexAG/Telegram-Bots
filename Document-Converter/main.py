@@ -186,6 +186,19 @@ def reset_conversion_count(message):
   else:
     bot.send_message(message.from_user.id, "Sorry Only The Owner Can Use This Command")
 
+@bot.message_handler(commands=['count'])
+def current_count(message):
+  if int(message.from_user.id) == int(owner):
+    conn_current = sqlite3.connect('conversion_data.db')
+    cursor_current = conn_current.cursor()
+    cursor_current.execute('SELECT count FROM conversion_count')
+    current_count = cursor_current.fetchone()
+    bot.send_message(message.chat.id, f"Current Count Is {current_count}")
+    conn_current.commit()
+    conn_current.close()
+  else:
+    bot.send_message(message.from_user.id, "Sorry Only The Owner Can Use This Command")
+
 #@bot.message_handler(commands=['add'])
 #def add_one(message):
 #  if int(message.from_user.id) == int(owner):
