@@ -127,7 +127,7 @@ def word_to_pdf():
   
 def pdf_to_word():
   convertapi.api_secret = API_SECRET
-  convertapi.convert('word', {
+  convertapi.convert('docx', {
     'File': "./downloaded/"+file_name
 }, from_format = 'pdf').save_files('./converted')
   #increment_count()
